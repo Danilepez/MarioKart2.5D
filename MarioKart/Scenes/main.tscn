@@ -1,6 +1,5 @@
-[gd_scene load_steps=29 format=3 uid="uid://d2glnv32t8md1"]
+[gd_scene load_steps=28 format=3 uid="uid://d2glnv32t8md1"]
 
-[ext_resource type="Texture2D" uid="uid://ckhx0sjrn2xu2" path="res://Temp/Background Color.png" id="1_5044a"]
 [ext_resource type="Script" uid="uid://chlcrco3oie33" path="res://Scripts/General/Game.gd" id="1_emb0w"]
 [ext_resource type="Script" uid="uid://nudevegx6152" path="res://Scripts/On Screen Elements/BackgroundEffects.gd" id="2_330he"]
 [ext_resource type="Script" path="res://Scripts/On Screen Elements/Minimap.gd" id="2_minimap"]
@@ -848,7 +847,6 @@ _treeLine = NodePath("Tree Line")
 z_index = -1
 position = Vector2(240, 180)
 scale = Vector2(15, 11.25)
-texture = ExtResource("1_5044a")
 
 [node name="Sky Line" type="Sprite2D" parent="Background Elements"]
 texture_filter = 1
