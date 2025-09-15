@@ -201,7 +201,7 @@ func _process(delta):
 		var raceTime = (Time.get_ticks_msec() - Globals.raceStartTime) / 1000.0
 		var distanceText = "Distancia a META: %.0f" % distanceToFinish
 		var proximityIcon = "🔥" if distanceToFinish < 100 else "○"
-				_debugLabel.text = "Pos: (%.0f, %.0f) | Speed: %.1f | %s\n%s | %s | Tiempo: %.1fs\n%s %s\n%s %s\nTEST: V=Victoria, T=Vuelta, SPACE=Cambiar personaje" % [playerPos.x, playerPos.z, _player.ReturnMovementSpeed(), Globals.selected_character, lapInfo, raceStatus, raceTime, proximityIcon, distanceText, victoryStatus, "Meta en: (64,64)"]
+		_debugLabel.text = "Pos: (%.0f, %.0f) | Speed: %.1f | %s\n%s | %s | Tiempo: %.1fs\n%s %s\n%s %s\nTEST: V=Victoria, T=Vuelta, SPACE=Cambiar personaje" % [playerPos.x, playerPos.z, _player.ReturnMovementSpeed(), Globals.selected_character, lapInfo, raceStatus, raceTime, proximityIcon, distanceText, victoryStatus, "Meta en: (64,64)"]
 
 # Configurar la pantalla de victoria con video
 func setup_victory_screen():
@@ -409,8 +409,6 @@ func restart_race():
 			_player.ResetPlayerState()
 	
 	print("✅ Carrera reiniciada - Jugador en posición inicial")
-=======
-		_debugLabel.text = "Position: (%.1f, %.1f, %.1f)\nSpeed: %.1f\nCharacter: %s\nPress SPACE to change character" % [playerPos.x, playerPos.y, playerPos.z, _player.ReturnMovementSpeed(), Globals.selected_character]
 
 # Función temporal para probar todos los personajes
 var test_characters = ["Mario", "Luigi", "Bowser", "DonkeyKong"]
