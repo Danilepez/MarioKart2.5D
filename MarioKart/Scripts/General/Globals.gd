@@ -3,6 +3,10 @@ extends Node
 
 var screenSize : Vector2 = Vector2(480, 360)
 
+# Variable para almacenar el personaje seleccionado
+# Opciones disponibles: "Mario", "Luigi", "Bowser", "DonkeyKong"
+var selected_character : String = "Mario"  # Cambia este valor para seleccionar diferente personaje
+
 # Variables del sistema de vueltas
 var currentLap : int = 0
 var totalLaps : int = 3
@@ -30,7 +34,8 @@ enum RoadType {
 	GRAVEL = 2,
 	OFF_ROAD = 3,
 	WALL = 4,
-	SINK = 5
+	SINK = 5,
+	HAZARD = 6
 }
 
 # Función para reiniciar la carrera
@@ -40,4 +45,4 @@ func reset_race():
 	hasPassedCheckpoint = false
 	playerBeforeFinishLine = true
 	raceStartTime = Time.get_ticks_msec()
-	lastLapTime = raceStartTime 
+	lastLapTime = raceStartTime

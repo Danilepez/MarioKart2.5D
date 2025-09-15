@@ -1,0 +1,228 @@
+[gd_scene load_steps=7 format=3 uid="uid://bvqc3q4y8n8xg"]
+
+[ext_resource type="Script" path="res://Scripts/UI/CharacterSelector.gd" id="1_selector"]
+[ext_resource type="Texture2D" uid="uid://cdyv5cen6o3hk" path="res://Textures/Racers/mario-3-0000-Photoroom.png" id="2_mario"]
+[ext_resource type="Texture2D" uid="uid://c073etuygn2jd" path="res://Textures/Racers/luigi-3-0000-Photoroom.png" id="3_luigi"]
+[ext_resource type="Texture2D" uid="uid://dt4tujqpcgwa7" path="res://Textures/Racers/bowser-3.png" id="4_bowser"]
+[ext_resource type="Texture2D" uid="uid://r7li2mlmst2q" path="res://Textures/Racers/donkeykongjr-3.png" id="5_donkeykong"]
+[ext_resource type="Texture2D" uid="uid://bvioi2jfn2hmv" path="res://Textures/Racers/Yoshi Back.png" id="6_yoshi"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font_size = 32
+font_color = Color(1, 1, 1, 1)
+
+[node name="CharacterSelector" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_selector")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.3, 0.8, 1)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -150.0
+offset_right = 120.0
+offset_bottom = -120.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Select Character"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="CharacterContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -80.0
+offset_right = 200.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopRow" type="HBoxContainer" parent="CharacterContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarioButton" type="Button" parent="CharacterContainer/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mario"
+
+[node name="MarioIcon" type="TextureRect" parent="CharacterContainer/TopRow/MarioButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_mario")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Separator1" type="Control" parent="CharacterContainer/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 1
+custom_minimum_size = Vector2(20, 0)
+
+[node name="LuigiButton" type="Button" parent="CharacterContainer/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Luigi"
+
+[node name="LuigiIcon" type="TextureRect" parent="CharacterContainer/TopRow/LuigiButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_luigi")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RowSeparator" type="Control" parent="CharacterContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+custom_minimum_size = Vector2(0, 10)
+
+[node name="BottomRow" type="HBoxContainer" parent="CharacterContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BowserButton" type="Button" parent="CharacterContainer/BottomRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Bowser"
+
+[node name="BowserIcon" type="TextureRect" parent="CharacterContainer/BottomRow/BowserButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_bowser")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Separator2" type="Control" parent="CharacterContainer/BottomRow"]
+layout_mode = 2
+size_flags_horizontal = 1
+custom_minimum_size = Vector2(20, 0)
+
+[node name="DonkeyKongButton" type="Button" parent="CharacterContainer/BottomRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Donkey Kong"
+
+[node name="DonkeyKongIcon" type="TextureRect" parent="CharacterContainer/BottomRow/DonkeyKongButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_donkeykong")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RowSeparator2" type="Control" parent="CharacterContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+custom_minimum_size = Vector2(0, 10)
+
+[node name="YoshiRow" type="HBoxContainer" parent="CharacterContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="YoshiButton" type="Button" parent="CharacterContainer/YoshiRow"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(150, 0)
+text = "Yoshi"
+
+[node name="YoshiIcon" type="TextureRect" parent="CharacterContainer/YoshiRow/YoshiButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_yoshi")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Instructions" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = 80.0
+offset_right = 150.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Click on a character to start!"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="CharacterContainer/TopRow/MarioButton" to="." method="_on_mario_selected"]
+[connection signal="pressed" from="CharacterContainer/TopRow/LuigiButton" to="." method="_on_luigi_selected"]
+[connection signal="pressed" from="CharacterContainer/BottomRow/BowserButton" to="." method="_on_bowser_selected"]
+[connection signal="pressed" from="CharacterContainer/BottomRow/DonkeyKongButton" to="." method="_on_donkey_kong_selected"]
+[connection signal="pressed" from="CharacterContainer/YoshiRow/YoshiButton" to="." method="_on_yoshi_selected"]
+[connection signal="pressed" from="CharacterContainer/BottomRow/DonkeyKongButton" to="." method="_on_donkey_kong_selected"]
