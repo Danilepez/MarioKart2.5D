@@ -17,6 +17,13 @@ var _isVictoryScreenActive : bool = false
 var _tKeyPressed : bool = false
 var _vKeyPressed : bool = false
 
+# Variables para sistema de oponentes simples
+var _simple_opponents : Array[SimpleOpponent] = []
+var _simple_opponent_script = preload("res://Scripts/World Elements/Racers/SimpleOpponent.gd")
+var _available_characters : Array[String] = ["mario", "luigi", "bowser", "donkikon"]
+var _opponents_created : bool = false
+var _frame_counter : int = 0
+
 func _ready():
 	print("=== INICIANDO GAME.GD ===")
 	print("Globals.selected_character al inicio: ", Globals.selected_character)
@@ -48,6 +55,18 @@ func _ready():
 	
 	# Inicializar tiempo de carrera
 	Globals.raceStartTime = Time.get_ticks_msec()
+	
+	# Los oponentes se crearán en _process() para asegurar que se muestren
+	print("🏁 Oponentes se crearán en _process()...")
+	
+	# Crear indicador inmediato para confirmar que _ready() funciona
+	var immediate_indicator = Label.new()
+	immediate_indicator.text = "GAME.GD _READY() EJECUTADO!"
+	immediate_indicator.position = Vector2(10, 50)
+	immediate_indicator.modulate = Color.CYAN
+	immediate_indicator.add_theme_font_size_override("font_size", 24)
+	add_child(immediate_indicator)
+	print("🔵 Indicador inmediato creado en _ready()")
 	
 	print("=== JUEGO INICIALIZADO ===")
 	print("Tamaño de pantalla del juego: ", Globals.screenSize)
@@ -148,6 +167,14 @@ func _setup_selected_character():
 	print("Tipo de _player: ", _player.get_script().get_global_name() if _player and _player.get_script() else "sin script")
 
 func _process(delta):
+	# Crear oponentes después de unos frames para asegurar que todo esté listo
+	_frame_counter += 1
+	if not _opponents_created and _frame_counter > 60:  # Después de 60 frames (1 segundo)
+		print("🎮 CREANDO OPONENTES EN _PROCESS - Frame: ", _frame_counter)
+		_create_test_opponent()
+		_opponents_created = true
+		print("✅ Oponentes creados exitosamente en _process()")
+	
 	if _isVictoryScreenActive:
 		# Solo procesar input para reiniciar si la pantalla de victoria está activa
 		if Input.is_key_pressed(KEY_ENTER) or Input.is_key_pressed(KEY_SPACE):
@@ -409,6 +436,207 @@ func restart_race():
 			_player.ResetPlayerState()
 	
 	print("✅ Carrera reiniciada - Jugador en posición inicial")
+
+func _setup_simple_opponents():
+	print("=== CONFIGURANDO OPONENTES SIMPLES ===")
+	print("🔍 DEBUG: _available_characters = ", _available_characters)
+	print("🔍 DEBUG: Globals.selected_character = ", Globals.selected_character)
+	
+	# Obtener personajes disponibles (todos excepto el seleccionado)
+	var opponent_characters = _available_characters.duplicate()
+	var selected_char = Globals.selected_character.to_lower()
+	
+	# Remover el personaje seleccionado de la lista
+	opponent_characters.erase(selected_char)
+	
+	print("Personaje del jugador: ", selected_char)
+	print("Oponentes a crear: ", opponent_characters)
+	print("🔍 DEBUG: SpriteHandler disponible: ", _spriteHandler != null)
+	
+	# Crear oponentes simples
+	for i in range(opponent_characters.size()):
+		var character_name = opponent_characters[i]
+		print("🎮 Intentando crear oponente: ", character_name)
+		var opponent = _create_simple_opponent(character_name, i)
+		if opponent:
+			_simple_opponents.append(opponent)
+			print("✅ Oponente simple creado: ", character_name)
+		else:
+			print("❌ ERROR: No se pudo crear oponente: ", character_name)
+	
+	print("🏁 Total de oponentes creados: ", _simple_opponents.size())
+
+func _create_simple_opponent(character_name: String, position_index: int) -> SimpleOpponent:
+	print("🎮 Creando oponente simple: ", character_name, " en posición: ", position_index)
+	
+	# Crear nodo directamente
+	var opponent = SimpleOpponent.new()
+	if not opponent:
+		print("❌ Error: No se pudo crear el oponente simple")
+		return null
+	
+	print("✅ Nodo SimpleOpponent creado exitosamente")
+	
+	# Configurar propiedades básicas CORRECTAS
+	opponent.character_name = character_name
+	opponent.ai_speed = randf_range(60.0, 100.0)  # Usar ai_speed que existe en SimpleOpponent
+	opponent.start_delay = position_index * 0.5    # Usar start_delay en lugar de position_offset
+	
+	print("🔧 Propiedades configuradas - speed:", opponent.ai_speed, " delay:", opponent.start_delay)
+	
+	# Agregar al mundo
+	add_child(opponent)
+	print("🌍 Oponente agregado como hijo")
+	
+	# Agregar al SpriteHandler para que sea visible
+	if _spriteHandler:
+		_spriteHandler.AddSimpleOpponent(opponent)
+		print("🖼️ Oponente agregado al SpriteHandler: ", character_name)
+	else:
+		print("❌ ERROR: _spriteHandler es null!")
+	
+	print("✅ Oponente simple configurado completamente: ", character_name)
+	return opponent
+
+func _create_test_opponent():
+	print("🧪 Creando oponentes directos en pantalla...")
+	
+	# Crear un CanvasLayer para asegurar que los oponentes sean visibles
+	var opponents_layer = CanvasLayer.new()
+	opponents_layer.name = "OpponentsLayer"
+	opponents_layer.layer = 10  # Capa alta para estar encima
+	add_child(opponents_layer)
+	
+	# También crear un indicador de texto para confirmar que funciona
+	var indicator = Label.new()
+	indicator.text = "OPONENTES ACTIVOS: 3"
+	indicator.position = Vector2(10, 10)
+	indicator.modulate = Color.YELLOW
+	indicator.add_theme_font_size_override("font_size", 20)
+	opponents_layer.add_child(indicator)
+	
+	# Definir datos de oponentes ANTES de usarlos
+	var positions = [
+		Vector2(200, 180),  # Adelante a la izquierda
+		Vector2(400, 160),  # Adelante a la derecha
+		Vector2(300, 140)   # Muy adelante al centro
+	]
+	
+	var colors = [Color.RED, Color.GREEN, Color.YELLOW]
+	var names = ["Mario", "Luigi", "Bowser"]
+	
+	# Crear marcadores pequeños de posición inicial
+	for i in range(3):
+		var marker = Label.new()
+		marker.text = names[i]
+		marker.position = positions[i] + Vector2(0, -20)
+		marker.modulate = colors[i]
+		marker.add_theme_font_size_override("font_size", 10)
+		opponents_layer.add_child(marker)
+	
+	for i in range(3):
+		# Usar ColorRect en lugar de Sprite2D para garantizar visibilidad
+		var opponent_rect = ColorRect.new()
+		opponent_rect.name = "VisibleOpponent_" + names[i]
+		opponent_rect.color = colors[i]
+		opponent_rect.size = Vector2(60, 80)
+		opponent_rect.position = positions[i]
+		
+		# Agregar borde blanco para que sea más visible
+		var border = ColorRect.new()
+		border.color = Color.WHITE
+		border.size = Vector2(64, 84)
+		border.position = positions[i] - Vector2(2, 2)
+		opponents_layer.add_child(border)
+		
+		# Agregar el oponente encima del borde
+		opponents_layer.add_child(opponent_rect)
+		
+		# Crear componente de movimiento personalizado para cada oponente COMPETITIVO
+		var opponent_data = {
+			"rect": opponent_rect,
+			"border": border,
+			"base_x": positions[i].x,
+			"base_y": positions[i].y,
+			"forward_speed": randf_range(50.0, 120.0),  # Velocidad competitiva hacia adelante
+			"lateral_speed": randf_range(30.0, 60.0),   # Movimiento lateral más agresivo
+			"time_offset": randf_range(0.0, 6.28),      # Offset aleatorio
+			"race_position": randf_range(-50.0, 200.0), # Posición en la carrera (adelante/atrás)
+			"lap_progress": 0.0,                        # Progreso de vuelta
+			"finished": false,
+			"name": names[i]
+		}
+		
+		# Crear un script de carrera competitiva para cada oponente
+		var movement_script = GDScript.new()
+		movement_script.source_code = """
+extends Node
+
+var opponent_data
+var time_alive = 0.0
+var current_x = 0.0
+var current_y = 0.0
+
+func _ready():
+	set_process(true)
+	current_x = opponent_data.base_x
+	current_y = opponent_data.base_y
+
+func _process(delta):
+	if not opponent_data or opponent_data.finished:
+		return
+		
+	time_alive += delta
+	
+	# MOVIMIENTO COMPETITIVO - Avanzar independientemente
+	var progress_speed = opponent_data.forward_speed * delta
+	opponent_data.lap_progress += progress_speed
+	
+	# Movimiento hacia adelante continuo (simulando que avanzan en la pista)
+	current_y -= progress_speed * 0.8  # Velocidad visual hacia adelante
+	
+	# Movimiento lateral competitivo (cambios de carril)
+	var lane_change = sin(time_alive * 0.5 + opponent_data.time_offset) * 40.0
+	var zigzag = sin(time_alive * 2.0 + opponent_data.time_offset) * 15.0
+	current_x = opponent_data.base_x + lane_change + zigzag
+	
+	# Mantener dentro de la pista
+	current_x = clamp(current_x, 150, 450)
+	
+	# Actualizar posiciones visuales
+	opponent_data.rect.position = Vector2(current_x, current_y)
+	opponent_data.border.position = Vector2(current_x - 2, current_y - 2)
+	
+	# Sistema de vueltas - reposicionar cuando salen de pantalla
+	if current_y < -100:
+		# Simular que completaron una vuelta y están en diferente parte de la pista
+		current_y = randf_range(500, 700)  # Reaparecer más atrás
+		current_x = randf_range(180, 420)  # Posición lateral aleatoria
+		opponent_data.base_x = current_x
+		print('🏁 ', opponent_data.name, ' avanzó en la carrera!')
+	
+	# Si van muy hacia atrás, traerlos de vuelta al juego
+	if current_y > 800:
+		current_y = randf_range(-200, -50)  # Ponerlos adelante
+		print('💨 ', opponent_data.name, ' alcanzó al jugador!')
+"""
+		
+		var movement_node = Node.new()
+		movement_node.set_script(movement_script)
+		movement_node.set("opponent_data", opponent_data)
+		opponents_layer.add_child(movement_node)
+		
+		print("🎮 Oponente ColorRect creado: ", names[i], " en ", positions[i])
+		print("   - Color: ", colors[i])
+		print("   - Tamaño: ", opponent_rect.size)
+	
+	print("🎮 3 oponentes visibles creados y animados en CanvasLayer!")
+	
+	# Crear un tween para hacer parpadear el indicador
+	var indicator_tween = create_tween()
+	indicator_tween.set_loops()
+	indicator_tween.tween_property(indicator, "modulate:a", 0.3, 1.0)
+	indicator_tween.tween_property(indicator, "modulate:a", 1.0, 1.0)
 
 # Función temporal para probar todos los personajes
 var test_characters = ["Mario", "Luigi", "Bowser", "DonkeyKong"]

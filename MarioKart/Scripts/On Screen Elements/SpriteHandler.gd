@@ -203,3 +203,29 @@ func WorldToScreenPosition(worldElement : WorldElement):
 		worldElement.SetScreenPosition(Vector2i(screenPos.floor()))
 		if worldElement is Hazard and Engine.get_process_frames() % 120 == 0:
 			print("  -> VISIBLE en pantalla: ", screenPos.floor())
+
+func AddOpponent(opponent: Racer):
+	# Verificar que el oponente es válido
+	if not opponent:
+		print("❌ Error: Oponente es null, no se puede agregar")
+		return
+		
+	# Agregar oponente a la lista de elementos del mundo
+	if not _worldElements.has(opponent):
+		_worldElements.append(opponent)
+		print("✅ Oponente agregado al SpriteHandler: ", opponent.name)
+	else:
+		print("⚠️ Oponente ya existe en SpriteHandler: ", opponent.name)
+
+func AddSimpleOpponent(opponent: SimpleOpponent):
+	# Verificar que el oponente simple es válido
+	if not opponent:
+		print("❌ Error: Oponente simple es null, no se puede agregar")
+		return
+		
+	# Agregar oponente simple a la lista de elementos del mundo
+	if not _worldElements.has(opponent):
+		_worldElements.append(opponent)
+		print("✅ Oponente simple agregado al SpriteHandler: ", opponent.character_name)
+	else:
+		print("⚠️ Oponente simple ya existe en SpriteHandler: ", opponent.character_name)
